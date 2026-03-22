@@ -9,7 +9,7 @@ export async function callAI(systemPrompt: string, userPrompt: string): Promise<
   for (let attempt = 0; attempt <= delays.length; attempt++) {
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.0-flash-lite',
+        model: 'gemini-1.5-flash',
         config: { systemInstruction: systemPrompt },
         contents: userPrompt,
       })
