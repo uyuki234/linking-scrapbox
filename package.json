@@ -1,0 +1,20 @@
+{
+  "name": "linking-scrapbox",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "linking-scrapbox": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.36.3",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
