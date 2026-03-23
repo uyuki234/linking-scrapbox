@@ -21,7 +21,8 @@ export function getParentOf(tree: DomainTree, domain: string, _parent?: string):
 export function parseTreeJson(json: string): DomainTree {
   let parsed: unknown
   try {
-    parsed = JSON.parse(json.trim())
+    const stripped = json.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+    parsed = JSON.parse(stripped)
   } catch {
     throw new Error(`Invalid JSON: ${json}`)
   }
