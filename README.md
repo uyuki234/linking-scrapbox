@@ -59,30 +59,9 @@ npm start -- --input data/export.json --output data/output.json
 |---|---|
 | `--input <path>` | Scrapboxエクスポートファイル（必須） |
 | `--output <path>` | 出力ファイル（必須） |
-| `--format <path>` | AIへの指示ファイル（任意） |
+| `--format <path>` | AIへの指示ファイル（任意、未指定時は `docs/config.md` を自動読み込み） |
 | `--tree-in <path>` | 前回保存したツリーを再利用（任意） |
 | `--tree-out <path>` | 今回のツリーを保存（任意） |
-
-### フォーマットルールファイル
-
-`--format` にMarkdownファイルを指定すると、AIへの追加指示として使われます。
-`docs/rules-example.md` にサンプルがあります。
-
-```bash
-npm start -- --input data/export.json --output data/output.json --format docs/rules-example.md
-```
-
-### ツリーの再利用
-
-`--tree-out` でツリーを保存しておくと、次回 `--tree-in` で読み込んでページ紐づけから再開できます。
-
-```bash
-# 初回: ツリーを保存
-npm start -- --input data/export.json --output data/output.json --tree-out data/tree.json
-
-# 次回: ツリーを再利用してページ紐づけから開始
-npm start -- --input data/export.json --output data/output.json --tree-in data/tree.json
-```
 
 ## 操作方法
 
