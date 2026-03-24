@@ -1,4 +1,5 @@
 import type { DomainTree } from './types.js'
+import { stripCodeBlock } from './ai/utils.js'
 
 export function flattenDomains(tree: DomainTree): string[] {
   const result: string[] = []
@@ -21,8 +22,7 @@ export function getParentOf(tree: DomainTree, domain: string, _parent?: string):
 export function parseTreeJson(json: string): DomainTree {
   let parsed: unknown
   try {
-    const stripped = json.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
-    parsed = JSON.parse(stripped)
+    parsed = JSON.parse(stripCodeBlock(json))
   } catch {
     throw new Error(`Invalid JSON: ${json}`)
   }
