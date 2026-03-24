@@ -1,0 +1,20 @@
+{
+  "name": "linking-scrapbox",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "linking-scrapbox": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node --env-file=.env dist/index.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
