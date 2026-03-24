@@ -1,4 +1,5 @@
 import * as readline from 'readline'
+import { existsSync } from 'fs'
 import { loadExport, loadRules, loadTree } from './io/loader.js'
 import { writeOutput, writeTree } from './io/writer.js'
 import { proposeTree } from './ai/treeProposer.js'
@@ -14,7 +15,9 @@ import type { Config, DomainTree, DomainAssignment, ScrapboxPage } from './types
 export async function run(config: Config): Promise<void> {
   // Step 1: Load files
   const exportData = loadExport(config.inputPath)
-  const rules = config.formatPath ? loadRules(config.formatPath) : undefined
+  const DEFAULT_CONFIG = 'docs/config.md'
+  const formatPath = config.formatPath ?? (existsSync(DEFAULT_CONFIG) ? DEFAULT_CONFIG : undefined)
+  const rules = formatPath ? loadRules(formatPath) : undefined
   let tree: DomainTree = config.treeInPath ? loadTree(config.treeInPath) : {}
 
   const pages = exportData.pages

@@ -1,11 +1,7 @@
 # linking-scrapbox 設定ファイル
 
-このファイルを `--format` で指定するとAIへの指示として使われます。
+このファイルはAIへの指示として自動で読み込まれます。
 各項目の値を書き換えるだけで動作が変わります。
-
-```bash
-npm start -- --input data/export.json --output data/output.json --format docs/config.md
-```
 
 ---
 
@@ -15,6 +11,21 @@ npm start -- --input data/export.json --output data/output.json --format docs/co
 
 ## 分野ツリーの設定
 
+分野ツリーとは、ページを分類するための階層構造です。
+たとえば以下のようなツリーを提案・確認できます。
+
+```
+技術
+├── プログラミング
+│   ├── Python
+│   └── Rust
+└── インフラ
+
+日常
+└── 食事
+```
+
+設定:
 - 階層の深さ: 最大3階層まで
 - 最小ページ数: 2ページ以上属するものだけ分野にする
 - 除外ワード: 「その他」「雑記」「メモ」などの汎用的すぎる分野名は作らない
@@ -26,4 +37,8 @@ npm start -- --input data/export.json --output data/output.json --format docs/co
 
 ## 上位分野の設定
 
+上位分野とは、複数の分野をまとめる親ページです。
+たとえば「Python」「Rust」をまとめる「プログラミング言語」を提案します。
+
+設定:
 - 上位分野を作る最小子分野数: 3つ以上まとめられる場合のみ提案する
