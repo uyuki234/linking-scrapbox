@@ -100,10 +100,12 @@ export async function run(config: Config): Promise<void> {
   if (!quit) {
     let proposals = await proposeParents(tree, rules)
 
-    for (const proposal of proposals) {
+    for (let i = 0; i < proposals.length; i++) {
+      const proposal = proposals[i]
       const childrenStr = proposal.children.map((c) => `[${c}]`).join(' ')
-      console.log(`\n${childrenStr} → [${proposal.parentName}]`)
-      if (proposal.grandParent) console.log(`  上位: [${proposal.grandParent}]`)
+      console.log(`\n=== 親リンクの提案 (${i + 1}/${proposals.length}): ${proposal.parentName} ===`)
+      console.log(`子リンク: ${childrenStr}`)
+      if (proposal.grandParent) console.log(`親リンクの親: [${proposal.grandParent}]`)
       console.log()
 
       const choice = await askUser('[y]作成  [n]スキップ  [e]名前変更 >', ['y', 'n', 'e'])
