@@ -48,7 +48,7 @@ GEMINI_MODEL=gemini-2.5-flash-lite
 Scrapboxの設定 → エクスポート → JSON でエクスポートファイルを取得し、`data/` に置きます。
 
 ```bash
-npm start -- --input data/export.json --output data/output.json
+npm start -- --input data/{あなたのプロジェクト名}.json --output data/output.json
 ```
 
 出力された `data/output.json` を Scrapbox にインポートします。
