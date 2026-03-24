@@ -108,14 +108,14 @@ export async function run(config: Config): Promise<void> {
       if (choice === 'y') {
         newDomainPages.push({
           title: proposal.parentName,
-          lines: [proposal.children.map((c) => `[${c}]`).join(' ')],
+          lines: [proposal.parentName, proposal.children.map((c) => `[${c}]`).join(' ')],
         })
       } else if (choice === 'e') {
         const newName = await askUserInput(`新しい名前を入力 [現在: ${proposal.parentName}]: `)
         const name = newName.trim() || proposal.parentName
         newDomainPages.push({
           title: name,
-          lines: [proposal.children.map((c) => `[${c}]`).join(' ')],
+          lines: [name, proposal.children.map((c) => `[${c}]`).join(' ')],
         })
       }
     }
