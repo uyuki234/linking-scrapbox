@@ -19,7 +19,7 @@ WSL  →  [開発環境] [Windows] [Linux]  （ページ末尾に挿入）
 ## 必要なもの
 
 - Node.js 20 以上
-- Groq または Gemini の APIキー（いずれも無料枠あり）
+- 対応AIプロバイダーのAPIキー（Groq・Gemini での動作確認済み。いずれも無料枠あり）
 
 ## セットアップ
 
