@@ -1,0 +1,27 @@
+name: 機能提案
+description: 新機能や改善を提案する
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: 提案ありがとうございます！
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 解決したい課題
+      description: 現状どんな不便があるか
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 提案する解決策
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 検討した代替案（あれば）
