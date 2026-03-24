@@ -2,7 +2,7 @@ import * as readline from 'readline'
 import { loadExport, loadRules, loadTree } from './io/loader.js'
 import { writeOutput, writeTree } from './io/writer.js'
 import { proposeTree } from './ai/treeProposer.js'
-import { proposeLinks } from './ai/pageLinker.js'
+import { proposeAllLinks } from './ai/pageLinker.js'
 import { proposeParents } from './ai/parentProposer.js'
 import { renderTree } from './ui/treeDisplay.js'
 import { askUser } from './ui/interaction.js'
@@ -51,11 +51,15 @@ export async function run(config: Config): Promise<void> {
   const domains = flattenDomains(tree)
   let quit = false
 
-  for (let i = 0; i < domains.length && !quit; i++) {
-    const domain = domains[i]
-    console.log(`\n=== ページ紐づけ (${i + 1}/${domains.length}): ${domain} ===`)
+  console.log('\nページ紐づけをAIが一括分析中...')
+  const proposals = await proposeAllLinks(domains, pages, rules)
 
-    let candidates = await proposeLinks(domain, pages, rules)
+  for (let i = 0; i < proposals.length && !quit; i++) {
+    const proposal = proposals[i]
+    const domain = proposal.domain
+    console.log(`\n=== ページ紐づけ (${i + 1}/${proposals.length}): ${domain} ===`)
+
+    let candidates = proposal.pages
 
     let linkApproved = false
     while (!linkApproved) {

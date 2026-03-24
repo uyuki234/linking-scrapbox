@@ -10,8 +10,9 @@ export async function proposeParents(
   const domains = flattenDomains(tree)
   const { system, user } = buildParentPrompt(domains, tree, rules)
   const raw = await callAI(system, user)
+  const stripped = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
   try {
-    return JSON.parse(raw) as ParentProposal[]
+    return JSON.parse(stripped) as ParentProposal[]
   } catch {
     throw new Error(`Failed to parse parent proposals JSON: ${raw}`)
   }
