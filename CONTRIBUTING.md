@@ -15,17 +15,21 @@ npm run build
 
 ## 開発の進め方
 
-1. `main` から作業ブランチを切る
+1. このリポジトリをforkする
+2. forkしたリポジトリをクローンする
+   ```bash
+   git clone https://github.com/<your-username>/linking-scrapbox
+   cd linking-scrapbox
+   ```
+3. `main` から作業ブランチを切る
    ```bash
    git checkout -b feat/your-feature
    ```
-
-2. 変更を加えてビルドが通ることを確認する
+4. 変更を加えてビルドが通ることを確認する
    ```bash
    npm run build
    ```
-
-3. PRを作成する（`main` ブランチへ）
+5. forkしたリポジトリにpushし、元リポジトリへPRを作成する（`main` ブランチへ）
 
 ## ブランチ命名規則
 
