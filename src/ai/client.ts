@@ -1,6 +1,15 @@
 import { GoogleGenAI } from '@google/genai'
 
-const ai = new GoogleGenAI({ apiKey: process.env['GEMINI_API_KEY'] })
+const apiKey = process.env['GEMINI_API_KEY']
+
+if (!apiKey) {
+  throw new Error(
+    'GEMINI_API_KEY is not set. Please provide a valid Gemini API key via your environment, ' +
+      'for example by setting GEMINI_API_KEY in a .env file or using the --env-file option.',
+  )
+}
+
+const ai = new GoogleGenAI({ apiKey })
 
 export async function callAI(systemPrompt: string, userPrompt: string): Promise<string> {
   const delays = [1000, 2000, 4000]

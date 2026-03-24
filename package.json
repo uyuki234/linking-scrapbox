@@ -6,8 +6,11 @@
     "linking-scrapbox": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && printf '#!/usr/bin/env node\n' | cat - dist/index.js > dist/index.with-shebang.js && mv dist/index.with-shebang.js dist/index.js",
     "start": "node --env-file=.env dist/index.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@google/genai": "^1.0.0",

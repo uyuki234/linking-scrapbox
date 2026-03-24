@@ -20,7 +20,20 @@ export async function proposeLinks(
       const parsed = JSON.parse(raw) as { pages: string[] }
       results.push(...parsed.pages)
     } catch {
-      // skip malformed batch response
+      const cleaned = raw
+        .replace(/^```[a-zA-Z]*\s*\n?/, '')
+        .replace(/\n?```$/, '')
+        .trim()
+      try {
+        const parsed = JSON.parse(cleaned) as { pages: string[] }
+        results.push(...parsed.pages)
+      } catch (err2) {
+        const snippet = raw.length > 200 ? raw.slice(0, 200) + '…' : raw
+        console.warn(
+          `Failed to parse AI link proposal batch for domain "${domain}" starting at index ${i}.`,
+          { error: err2, rawSnippet: snippet },
+        )
+      }
     }
   }
 

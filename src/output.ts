@@ -14,31 +14,42 @@ export function buildOutput(
   assignments: DomainAssignment[],
   newDomainPages: ScrapboxPage[],
 ): ScrapboxExport {
-  const pageToDomainsMap = new Map<string, string[]>()
+  const pageToDomainsMap = new Map<string, Set<string>>()
 
   for (const assignment of assignments) {
     for (const pageTitle of assignment.pages) {
-      const existing = pageToDomainsMap.get(pageTitle) ?? []
-      existing.push(assignment.domain)
+      const existing = pageToDomainsMap.get(pageTitle) ?? new Set<string>()
+      existing.add(assignment.domain)
       pageToDomainsMap.set(pageTitle, existing)
     }
   }
 
   const updatedPages = exportData.pages.map((page) => {
-    const domains = pageToDomainsMap.get(page.title)
-    if (!domains || domains.length === 0) return page
+    const domainSet = pageToDomainsMap.get(page.title)
+    if (!domainSet || domainSet.size === 0) return page
 
-    const linkLine = domains.map((d) => `[${d}]`).join(' ')
     const lines = [...page.lines]
 
     if (detectLinkLine(lines)) {
-      lines[0] = linkLine
+      // Parse existing bracket links and merge with new domains
+      const existingLinks = (lines[0] ?? '')
+        .trim()
+        .match(/\[([^\]]+)\]/g)
+        ?.map((m) => m.slice(1, -1)) ?? []
+      const mergedDomains = Array.from(new Set([...existingLinks, ...domainSet])).sort((a, b) => a.localeCompare(b))
+      lines[0] = mergedDomains.map((d) => `[${d}]`).join(' ')
     } else {
-      lines.unshift(linkLine)
+      const domains = Array.from(domainSet).sort((a, b) => a.localeCompare(b))
+      lines.unshift(domains.map((d) => `[${d}]`).join(' '))
     }
 
     return { ...page, lines }
   })
 
-  return { ...exportData, pages: [...updatedPages, ...newDomainPages] }
+  const existingTitles = new Set(updatedPages.map((page) => page.title))
+  const filteredNewDomainPages = newDomainPages.filter(
+    (page) => !existingTitles.has(page.title),
+  )
+
+  return { ...exportData, pages: [...updatedPages, ...filteredNewDomainPages] }
 }
