@@ -1,5 +1,6 @@
 import { callAI } from './client.js'
 import { buildAllLinksPrompt } from './prompts.js'
+import { stripCodeBlock } from './utils.js'
 import type { ScrapboxPage, DomainAssignment } from '../types.js'
 
 export async function proposeAllLinks(
@@ -10,7 +11,7 @@ export async function proposeAllLinks(
   const { system, user } = buildAllLinksPrompt(domains, allPages, rules)
   const raw = await callAI(system, user)
 
-  const stripped = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+  const stripped = stripCodeBlock(raw)
   let parsed: Record<string, string[]>
   try {
     parsed = JSON.parse(stripped) as Record<string, string[]>
