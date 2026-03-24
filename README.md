@@ -1,5 +1,7 @@
 # linking-scrapbox
 
+[![CI](https://github.com/uyuki234/linking-scrapbox/actions/workflows/ci.yml/badge.svg)](https://github.com/uyuki234/linking-scrapbox/actions/workflows/ci.yml)
+
 ScrapboxのエクスポートJSONを入力として、AIが各ページの関連分野を分析し、間接リンクを挿入したJSONを出力するCLIツールです。
 
 **ユーザーが主体**で、AIは候補の提案に徹します。すべての提案はユーザーが確認・承認・編集してから反映されます。
