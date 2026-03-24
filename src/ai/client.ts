@@ -1,6 +1,7 @@
 import { GoogleGenAI } from '@google/genai'
 
 const ai = new GoogleGenAI({ apiKey: process.env['GEMINI_API_KEY'] })
+const MODEL = process.env['GEMINI_MODEL'] ?? 'gemini-2.5-flash-lite'
 
 const MIN_INTERVAL_MS = 6000 // RPM 10 制限に対して余裕を持たせる
 let lastCallTime = 0
@@ -17,7 +18,7 @@ export async function callAI(systemPrompt: string, userPrompt: string): Promise<
     lastCallTime = Date.now()
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash-lite',
+        model: MODEL,
         config: { systemInstruction: systemPrompt },
         contents: userPrompt,
       })
