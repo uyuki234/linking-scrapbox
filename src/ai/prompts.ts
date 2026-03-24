@@ -22,23 +22,25 @@ export function buildTreePrompt(
   return { system, user }
 }
 
-export function buildLinkPrompt(
-  domain: string,
+export function buildAllLinksPrompt(
+  domains: string[],
   pages: ScrapboxPage[],
   rules?: string,
 ): { system: string; user: string } {
   const system = [
     'あなたはScrapboxのページを分野に紐づけるアシスタントです。',
-    '分野名とページタイトルの一覧を受け取り、その分野に属するページのタイトルをJSON形式で返してください。',
-    '形式: {"pages": ["タイトル1", "タイトル2"]}',
+    '分野リストとページタイトルの一覧を受け取り、各分野に属するページをJSON形式で返してください。',
+    '形式: {"分野A": ["タイトル1", "タイトル2"], "分野B": ["タイトル3"]}',
+    '1つのページが複数の分野に属しても構いません。属さない分野は空配列にしてください。',
     'JSONのみを返してください。説明文やコードブロック記号は不要です。',
     rules ? `フォーマットルール:\n${rules}` : '',
   ]
     .filter(Boolean)
     .join('\n')
 
-  const titles = pages.map((p) => p.title).join('\n')
-  const user = `分野「${domain}」に属するページを以下のリストから選んでJSONで返してください:\n\n${titles}`
+  const domainList = domains.join('\n')
+  const titleList = pages.map((p) => p.title).join('\n')
+  const user = `【分野リスト】\n${domainList}\n\n【ページタイトル一覧】\n${titleList}\n\n各分野に属するページをJSONで返してください。`
 
   return { system, user }
 }

@@ -1,28 +1,25 @@
 import { callAI } from './client.js'
-import { buildLinkPrompt } from './prompts.js'
-import type { ScrapboxPage } from '../types.js'
+import { buildAllLinksPrompt } from './prompts.js'
+import type { ScrapboxPage, DomainAssignment } from '../types.js'
 
-const BATCH_SIZE = 10
-
-export async function proposeLinks(
-  domain: string,
+export async function proposeAllLinks(
+  domains: string[],
   allPages: ScrapboxPage[],
   rules?: string,
-): Promise<string[]> {
-  const pages = allPages.filter((p) => p.title !== domain)
-  const results: string[] = []
+): Promise<DomainAssignment[]> {
+  const { system, user } = buildAllLinksPrompt(domains, allPages, rules)
+  const raw = await callAI(system, user)
 
-  for (let i = 0; i < pages.length; i += BATCH_SIZE) {
-    const batch = pages.slice(i, i + BATCH_SIZE)
-    const { system, user } = buildLinkPrompt(domain, batch, rules)
-    const raw = await callAI(system, user)
-    try {
-      const parsed = JSON.parse(raw) as { pages: string[] }
-      results.push(...parsed.pages)
-    } catch {
-      // skip malformed batch response
-    }
+  const stripped = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+  let parsed: Record<string, string[]>
+  try {
+    parsed = JSON.parse(stripped) as Record<string, string[]>
+  } catch {
+    throw new Error(`Failed to parse page link JSON: ${raw}`)
   }
 
-  return [...new Set(results)]
+  return domains.map((domain) => ({
+    domain,
+    pages: (parsed[domain] ?? []).filter((t) => t !== domain),
+  }))
 }
