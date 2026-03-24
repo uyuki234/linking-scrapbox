@@ -1,10 +1,7 @@
 import type { ScrapboxExport, ScrapboxPage, DomainAssignment } from './types.js'
 
-export function detectLinkLine(lines: string[]): boolean {
-  if (lines.length === 0) return false
-  const first = lines[0]
-  if (!first) return false
-  const trimmed = first.trim()
+function isLinkLine(line: string): boolean {
+  const trimmed = line.trim()
   if (trimmed === '') return false
   return /^(\[[^\]]+\]\s*)+$/.test(trimmed)
 }
@@ -29,12 +26,12 @@ export function buildOutput(
     if (!domains || domains.length === 0) return page
 
     const linkLine = domains.map((d) => `[${d}]`).join(' ')
+    // 末尾の既存リンク行を上書き、なければ末尾に追加
     const lines = [...page.lines]
-
-    if (detectLinkLine(lines)) {
-      lines[0] = linkLine
+    if (lines.length > 0 && isLinkLine(lines[lines.length - 1])) {
+      lines[lines.length - 1] = linkLine
     } else {
-      lines.unshift(linkLine)
+      lines.push(linkLine)
     }
 
     return { ...page, lines }
